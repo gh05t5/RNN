@@ -35,7 +35,7 @@ model = tf.keras.Sequential(
 
 model.build(input_shape=(None, MAXLEN))
 
-print(model.summary())
+##print(model.summary())
 
 
 #Training
@@ -44,8 +44,23 @@ model.compile(loss="binary_crossentropy",
               optimizer="rmsprop",
               metrics=['accuracy'])
 
-history = model.fit(train_data, train_lables, epochs=10, validation_split=0.2)
+history = model.fit(train_data, train_lables, epochs=1, validation_split=0.2)
 
 results = model.evaluate(test_data, test_labels)
 
-print(results)
+##print(results)
+
+
+#Encoding function for new reviews 
+
+
+word_index = imdb.get_word_index()
+
+def encode_text (text):
+    tokens = keras.preprocessing.text.text_to_word_sequence(text)
+    tokens = [word_index[word] if word in word_index else 0 for word in tokens]
+    return sequence.pad_sequences([tokens], MAXLEN)[0]
+
+text = "That movie was amazing, so amazing"
+encoded = encode_text(text)
+print(encoded)
